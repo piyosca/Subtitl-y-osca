@@ -6,7 +6,7 @@ public class Subtitles {
 		if (first.getStartTime() < second.getStartTime()) {
 			return second.getStartTime() - first.getEndTime();
 		} else {
-			return first.getStartTime() - second.
+			return first.getStartTime() - second.getEndTime();
 		}
 	}
 	
