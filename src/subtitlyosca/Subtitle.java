@@ -6,7 +6,7 @@ public class Subtitle {
 	private boolean timecoded;
 	private long startTime;
 	private long endTime;
-	private long duration;
+//	private long duration;
 	private String text;
 	
 	public Subtitle(long s, long e, String t) {
@@ -14,7 +14,7 @@ public class Subtitle {
 		this.timecoded = true;
 		this.startTime = Math.min(s, e);
 		this.endTime = Math.max(s, e);
-		this.duration = this.startTime - this.endTime;
+//		this.duration = Math.abs(this.startTime - this.endTime);
 		this.text = t;
 	}
 
@@ -23,7 +23,7 @@ public class Subtitle {
 		this.timecoded = false;
 		this.startTime = -1;
 		this.endTime = -1;
-		this.duration = -1;
+//		this.duration = -1;
 		this.text = null;
 	}
 	
@@ -44,7 +44,7 @@ public class Subtitle {
 	}
 	
 	public long getDuration() {
-		return duration;
+		return Math.abs(this.startTime - this.endTime);
 	}
 
 	public long getStartTime() {
@@ -53,7 +53,7 @@ public class Subtitle {
 
 	public void setStartTime(long startTime) {
 		this.startTime = startTime;
-		this.duration = this.startTime - this.endTime;
+//		this.duration = this.startTime - this.endTime;
 	}
 
 	public long getEndTime() {
@@ -62,7 +62,7 @@ public class Subtitle {
 
 	public void setEndTime(long endTime) {
 		this.endTime = endTime;
-		this.duration = this.startTime - this.endTime;
+//		this.duration = this.startTime - this.endTime;
 	}
 
 	public String getText() {

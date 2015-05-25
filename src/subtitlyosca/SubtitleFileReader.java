@@ -7,12 +7,8 @@ public class SubtitleFileReader {
 
 	private BufferedReader br;
 		
-	public void open(String fileName) {
-		try {
-			br = new BufferedReader(new FileReader(fileName));
-		} catch (IOException e) {
-			System.err.println("SubtitleFile.open() Error: " + e.toString());
-		} 		
+	public void open(String fileName) throws FileNotFoundException {
+		br = new BufferedReader(new FileReader(fileName));		
 	}
 	
 	public void close() {
