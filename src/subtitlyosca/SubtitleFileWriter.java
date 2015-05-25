@@ -1,6 +1,7 @@
 package subtitlyosca;
 
 import java.io.*;
+import java.util.*;
 
 public class SubtitleFileWriter {
 
@@ -25,5 +26,14 @@ public class SubtitleFileWriter {
 		pw.println();
 	}
 	
+	public void writeAll(ArrayList<Subtitle> sb) {
+		// write
+		for (int i = 0; i < sb.size(); i++) 
+			this.writeSRT(sb.get(i));
+	}
 	
+	//		int d = (int) (w.getDuration() / 1000);
+	//		int v = Subtitles.countVowels(w.getText()); 
+	//		double vps = (double) v / (double) d;
+	//		w.setText(w.getText() + "|" + d + "sec|" + v + " V's|" + String.format("%1.3f", vps));
 }

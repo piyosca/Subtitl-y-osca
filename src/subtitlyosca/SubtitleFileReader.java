@@ -2,6 +2,7 @@ package subtitlyosca;
 
 import java.io.*;
 import java.util.regex.*;
+import java.util.*;
 
 public class SubtitleFileReader {
 
@@ -18,6 +19,20 @@ public class SubtitleFileReader {
 			System.err.println("SubtitleFile.close() Error: " + e.toString());
 		}
 	}
+	
+	public ArrayList<Subtitle> readAll() {
+		ArrayList<Subtitle> sbHolder = new ArrayList<Subtitle>(); 
+		Subtitle t;
+		int idx = 1;
+		
+		while ((t = this.readNext()) != null) {
+			t.setIndex(idx++);
+			sbHolder.add(t);
+		}
+		
+		return sbHolder;
+	}
+	
 	
 	// parse and return a Subtitle object from the file
 	// returns null if there's no Subtitle to read

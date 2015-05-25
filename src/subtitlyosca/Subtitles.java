@@ -13,6 +13,12 @@ public class Subtitles {
 	private static final char[] VOWELS = {'A', 'E', 'I', 'O', 'U', 'a', 'e', 'i', 'o', 'u'};
 	private static final char[] PUNCTUATIONS = {'.', '!', '?'};
 	
+	public static void resetIdx(ArrayList<Subtitle> sb) {
+		for (int i = 0; i < sb.size(); i++) {
+			sb.get(i).setIndex(i + 1);
+		}
+	}
+	
 	public static long gapBetween(Subtitle first, Subtitle second) {
 		if (first.getStartTime() < second.getStartTime()) {
 			return second.getStartTime() - first.getEndTime();
@@ -100,6 +106,62 @@ public class Subtitles {
 			}				
 		}
 		return ret;
+	}
+	
+	// slice each subtitles by sentence
+	public static ArrayList<Subtitle> sliceAllBySentence(ArrayList<Subtitle> src) {
+		ArrayList<Subtitle> sbHolder = new ArrayList<Subtitle>();
+		for (int i = 0; i < src.size(); i++) {
+			Subtitle[] tSBs = sliceAtPunctuations(src.get(i));
+			for (int j = 0; j < tSBs.length; j++) {
+				sbHolder.add(tSBs[j]);
+			}
+		}
+		return sbHolder;
+	}
+	
+	// merge to match sentences and subtitles	
+	public static ArrayList<Subtitle> mergeAllToSentence(ArrayList<Subtitle> src) {
+		ArrayList<Subtitle> sbHolder = new ArrayList<Subtitle>();
+		int cnt = 0;
+		while (cnt < src.size()) {
+			Subtitle m = src.get(cnt);
+			while ((!hasFullSentence(m)) && cnt < src.size() - 1) {
+				if (gapBetween(m, src.get(cnt + 1)) > 1000) break;
+				m = merge(m, src.get(++cnt));
+			}
+			sbHolder.add(m);
+			cnt++;
+		}
+		return sbHolder;
+	}
+	
+	// slice where the text is too long
+	public static ArrayList<Subtitle> truncateAllByVowelCount(ArrayList<Subtitle> src) {
+		ArrayList<Subtitle> sbHolder = new ArrayList<Subtitle>();
+		for (int i = 0; i < src.size(); i++) {
+			Subtitle[] tSBs = sliceWhereTooLong(src.get(i));
+			for (int j = 0; j < tSBs.length; j++) {
+				sbHolder.add(tSBs[j]);
+			}
+		}
+		return sbHolder;
+	}
+	
+	// merge where the subtitle is too short
+	public static ArrayList<Subtitle> mergeAllByTime(ArrayList<Subtitle> src) {
+		ArrayList<Subtitle> sbHolder = new ArrayList<Subtitle>();
+		int cnt = 0;
+		while (cnt < src.size()) {
+			Subtitle m = src.get(cnt);
+			while ((m.getDuration() < TOO_SHORT) && (cnt < src.size() - 1)) {
+				if (gapBetween(m, src.get(cnt + 1)) > 1000) break;
+				m = merge(m, src.get(++cnt));
+			}
+			sbHolder.add(m);
+			cnt++;
+		}
+		return sbHolder;
 	}
 	
 	// merge Subtitle objects
